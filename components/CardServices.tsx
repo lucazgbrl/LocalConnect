@@ -1,0 +1,1 @@
+// render a list of services card(to be used in search results and home page)
