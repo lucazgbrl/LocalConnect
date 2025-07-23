@@ -32,7 +32,11 @@ export default function App() {
         <Text style={styles.signInText}>Sign In</Text>
       </TouchableOpacity>
 
-      <Text style={styles.or}>OR SIGN IN USING</Text>
+      <View style={styles.orContainer}>
+        <View style={styles.line} />
+        <Text style={styles.or}>OR SIGN WITH</Text>
+        <View style={styles.line} />
+      </View>
 
       <View style={styles.socialContainer}>
         <TouchableOpacity style={styles.socialButton}>
@@ -55,6 +59,17 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: '#fff' },
+  orContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+    width: '100%',
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ccc',
+  },
   illustration: { marginBottom: 20 },
   title: { fontSize: 24, fontWeight: 'bold' },
   subtitle: { fontSize: 16, marginBottom: 20 },
@@ -63,7 +78,11 @@ const styles = StyleSheet.create({
   forgot: { alignSelf: 'flex-end', marginVertical: 5 },
   signInButton: { backgroundColor: '#ddd', padding: 15, borderRadius: 5, width: '100%', alignItems: 'center', marginVertical: 10 },
   signInText: { fontWeight: 'bold' },
-  or: { marginVertical: 10 },
+  or: {
+    marginHorizontal: 10,
+    fontSize: 12,
+    color: '#888',
+  },
   socialContainer: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
   socialButton: { backgroundColor: '#eee', padding: 15, borderRadius: 5, flex: 1, alignItems: 'center', marginHorizontal: 5 },
   footer: { flexDirection: 'row', marginTop: 20 },
