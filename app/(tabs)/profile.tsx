@@ -1,90 +1,95 @@
+import { useUserStore } from '@/lib/store';
 import { Image } from 'expo-image';
+import { Redirect } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function App() {
+export default function ProfileScreen() {
+  const user = useUserStore((state) => state.user);
+  if (!user) {
+    return <Redirect href="/login" />;
+  }
+
   return (
-    <View style={styles.container}>
-      {/* Imagem ilustrativa - substitua depois por Image */}
-      <View style={styles.illustration}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.profileContainer}>
         <Image
-          source={require('@/assets/images/app-logo.png')}
-          style={{ width: 100, height: 100 }}
+          source={user.profileImageUrl}
+          style={styles.avatar}
         />
+        <Text style={styles.name}>{user.name}</Text>
+        <Text style={styles.email}>{user.email}</Text>
       </View>
 
-      <View style={styles.inputContainer}>
-        <Icon name="email" size={20} />
-        <TextInput placeholder="Email" style={styles.input} />
+      <View style={styles.linksContainer}>
+        <ProfileLink icon="calendar" label="My Bookings" />
+        <ProfileLink icon="chatbubble" label="Chats" />
+        <ProfileLink icon="notifications" label="Notifications" />
+        <ProfileLink icon="settings" label="Options" />
+        <ProfileLink icon="help-circle" label="Help" />
+        <ProfileLink icon="location" label="My Addresses" />
       </View>
+    </ScrollView>
+  );
+}
 
-      <View style={styles.inputContainer}>
-        <Icon name="lock" size={20} />
-        <TextInput placeholder="Password" secureTextEntry style={styles.input} />
+function ProfileLink({ icon, label }: { icon: string; label: string }) {
+  return (
+    <TouchableOpacity style={styles.link}>
+      <View style={styles.linkLeft}>
+        <Icon name={icon} size={22} color="#333" />
+        <Text style={styles.linkLabel}>{label}</Text>
       </View>
-
-      <TouchableOpacity>
-        <Text style={styles.forgot}>Forgot your password?</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.signInButton}>
-        <Text style={styles.signInText}>Sign In</Text>
-      </TouchableOpacity>
-
-      <View style={styles.orContainer}>
-        <View style={styles.line} />
-        <Text style={styles.or}>OR SIGN WITH</Text>
-        <View style={styles.line} />
-      </View>
-
-      <View style={styles.socialContainer}>
-        <TouchableOpacity style={styles.socialButton}>
-          <Text>Facebook</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.socialButton}>
-          <Text>Google</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.footer}>
-        <Text>New here? </Text>
-        <TouchableOpacity>
-          <Text style={styles.signUp}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      <Icon name="chevron-forward" size={20} color="#999" />
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: '#fff' },
-  orContainer: {
+  container: {
+    paddingTop: 50,
+    backgroundColor: '#f8f8f8',
+  },
+  profileContainer: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 12,
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  email: {
+    fontSize: 14,
+    color: '#666',
+  },
+  linksContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  link: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 18,
+    paddingHorizontal: 20,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#ddd',
+  },
+  linkLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 20,
-    width: '100%',
+    gap: 12,
   },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#ccc',
+  linkLabel: {
+    fontSize: 16,
+    color: '#333',
   },
-  illustration: { marginBottom: 20 },
-  title: { fontSize: 24, fontWeight: 'bold' },
-  subtitle: { fontSize: 16, marginBottom: 20 },
-  inputContainer: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 5, padding: 10, marginVertical: 5, width: '100%' },
-  input: { marginLeft: 10, flex: 1 },
-  forgot: { alignSelf: 'flex-end', marginVertical: 5 },
-  signInButton: { backgroundColor: '#ddd', padding: 15, borderRadius: 5, width: '100%', alignItems: 'center', marginVertical: 10 },
-  signInText: { fontWeight: 'bold' },
-  or: {
-    marginHorizontal: 10,
-    fontSize: 12,
-    color: '#888',
-  },
-  socialContainer: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
-  socialButton: { backgroundColor: '#eee', padding: 15, borderRadius: 5, flex: 1, alignItems: 'center', marginHorizontal: 5 },
-  footer: { flexDirection: 'row', marginTop: 20 },
-  signUp: { fontWeight: 'bold' },
 });
