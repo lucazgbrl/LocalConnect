@@ -21,6 +21,8 @@ const MAPPING = {
   'person.fill': 'person',
   'search.fill': 'search',
   'heart.fill': 'favorite',
+  'menu.fill': 'menu',
+  'filter': 'filter-list',
 } as IconMapping;
 
 /**

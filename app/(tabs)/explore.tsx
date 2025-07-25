@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#f9f9f9",
-    marginTop: 40, // Adjust for status bar on Android
+    paddingTop: 50,
   },
   order_btn: {
     flex: 1,
