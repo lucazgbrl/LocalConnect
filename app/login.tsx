@@ -26,6 +26,11 @@ export default function LoginScreen() {
     console.log('User:', user);
   }, [user]);
 
+
+  const handleBackToHome = () => {
+    router.replace('/(tabs)/home');
+  }
+
   return (
     <View style={styles.container}>
       {/* Imagem ilustrativa - substitua depois por Image */}
@@ -75,6 +80,10 @@ export default function LoginScreen() {
           <Text style={styles.signUp}>Sign Up</Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity style={styles.backToHomeButton} onPress={handleBackToHome}>
+        <Text>Voltar para Home</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -109,4 +118,12 @@ const styles = StyleSheet.create({
   socialButton: { backgroundColor: '#eee', padding: 15, borderRadius: 5, flex: 1, alignItems: 'center', marginHorizontal: 5 },
   footer: { flexDirection: 'row', marginTop: 20 },
   signUp: { fontWeight: 'bold' },
+  backToHomeButton: {
+    backgroundColor: '#ddd',
+    padding: 15,
+    borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+    marginVertical: 10
+  }
 });
