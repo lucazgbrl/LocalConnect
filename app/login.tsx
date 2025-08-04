@@ -1,7 +1,7 @@
 import { useUserStore } from '@/lib/store';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -11,8 +11,6 @@ export default function LoginScreen() {
   const user = useUserStore((state) => state.user);
 
   const handleSignIn = () => {
-    // Placeholder for sign-in logic
-    console.log('Sign In button pressed');
     // Set user data in the store
     setUser({
       id: '1',
@@ -20,10 +18,13 @@ export default function LoginScreen() {
       email: 'lucas@example.com',
     });
 
-    console.log('User signed in:', { user });
     // Navigate to the home screen or perform sign-in
     router.replace('/(tabs)/profile');
   };
+
+  useEffect(() => {
+    console.log('User:', user);
+  }, [user]);
 
   return (
     <View style={styles.container}>
