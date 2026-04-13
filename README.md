@@ -1,50 +1,100 @@
-# Welcome to your Expo app 👋
+# 🚀 LocalConnect
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+LocalConnect é uma plataforma que conecta consumidores a comércios locais, facilitando a descoberta de produtos e serviços próximos com base em geolocalização.
 
-## Get started
+A proposta é fortalecer o comércio de bairro, criando uma experiência semelhante a grandes marketplaces — porém focada no contexto local.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 📌 Visão Geral
 
-2. Start the app
+O projeto tem como objetivo:
 
-   ```bash
-   npx expo start
-   ```
+- Aproximar consumidores de lojistas da região
+- Permitir busca de produtos próximos em tempo real
+- Exibir lojas em mapa com base na localização do usuário
+- Criar uma vitrine digital acessível para pequenos comércios
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🧠 Conceito
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Diferente de marketplaces tradicionais, o LocalConnect foca em:
 
-## Get a fresh project
+- 📍 **Geolocalização real**
+- 🏪 **Comércio local (bairro/região)**
+- ⚡ **Descoberta rápida de produtos**
+- 🤝 **Incentivo à economia local**
 
-When you're ready, run:
+---
+
+## 🏗️ Arquitetura (alto nível)
+
+O sistema é dividido em:
+
+### Frontend
+- Interface moderna inspirada em apps como marketplaces e mapas
+- Exibição de produtos, lojas e localização
+
+### Backend
+- API responsável por:
+  - Gestão de usuários
+  - Cadastro de lojas
+  - Produtos
+  - Geolocalização
+
+### Banco de Dados
+- Estrutura relacional para:
+  - Usuários
+  - Lojas
+  - Produtos
+  - Endereços
+
+---
+
+## ⚙️ Tecnologias
+
+Principais tecnologias utilizadas:
+
+- **Frontend**
+  - React / Next.js
+  - Tailwind CSS
+
+- **Backend**
+  - Node.js
+  - Fastify
+
+- **Banco de Dados**
+  - MySQL
+
+- **Outros**
+  - APIs de mapa (Google Maps ou similar)
+  - Geolocalização
+
+---
+
+## 📦 Funcionalidades
+
+- [ ] Cadastro de usuários
+- [ ] Cadastro de lojistas
+- [ ] Criação de lojas
+- [ ] Cadastro de produtos
+- [ ] Busca por produtos próximos
+- [ ] Visualização em mapa
+- [ ] Sistema de localização do usuário
+
+---
+
+## 🚀 Como rodar o projeto
+
+### Pré-requisitos
+
+- Node.js instalado
+- MySQL rodando
+- Gerenciador de pacotes (npm ou yarn)
+
+### Clone o projeto
 
 ```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+git clone https://github.com/lucazgbrl/LocalConnect.git
+cd LocalConnect
