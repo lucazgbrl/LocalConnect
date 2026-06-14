@@ -16,6 +16,7 @@ export default function LoginScreen() {
       id: '1',
       name: 'Lucas',
       email: 'lucas@example.com',
+      id_user_type: 1,
     });
 
     // Navigate to the home screen or perform sign-in
