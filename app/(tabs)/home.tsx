@@ -22,8 +22,8 @@ export default function HomeScreen() {
       </View>
       <ScrollView contentContainerStyle={styles.container}>
           <SearchBar />
-          <View style={{width: '100%' }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 15 }}>
+          <View style={styles.featuredSection}>
+            <Text style={styles.sectionTitle}>
               Featured Merchant
             </Text>
             <CardService
@@ -31,17 +31,25 @@ export default function HomeScreen() {
               imageSrc={services[0].imageSrc}
               rating={services[0].rating}
               tags={services[0].tags}
+              variant="featured"
             />
           </View>
           <CardCategories />
+          <ListServices contentPaddingHorizontal={0} orientation="vertical" />
       </ScrollView>
-      <ListServices />
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { alignItems:'center', backgroundColor: '#f8f8f8', paddingHorizontal: 20, gap: 20, paddingTop: 20 },
+  container: {
+    alignItems:'center',
+    backgroundColor: '#f8f8f8',
+    paddingHorizontal: 20,
+    gap: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -49,5 +57,14 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingHorizontal: 20,
     backgroundColor: '#f8f8f8',
+  },
+  featuredSection: {
+    width: '100%',
+    maxWidth: 720,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 15,
   },
 });

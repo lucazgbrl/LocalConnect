@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 type Category = {
@@ -21,6 +21,9 @@ const ALL_CATEGORIES: Category[] = [
 ];
 
 export default function CardCategories() {
+  const { width } = useWindowDimensions();
+  const cardSize = Math.min(Math.max(width * 0.2, 80), 104);
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
@@ -33,7 +36,10 @@ export default function CardCategories() {
         contentContainerStyle={styles.listContent}
       >
         {ALL_CATEGORIES.map((category) => (
-          <TouchableOpacity key={category.id} style={styles.categoryCard}>
+          <TouchableOpacity
+            key={category.id}
+            style={[styles.categoryCard, { width: cardSize, height: cardSize }]}
+          >
             <Icon name={category.icon} size={24} color="#fff" />
             <Text style={styles.categoryText}>{category.name}</Text>
           </TouchableOpacity>
@@ -45,6 +51,8 @@ export default function CardCategories() {
 
 const styles = StyleSheet.create({
   wrapper: {
+    width: '100%',
+    maxWidth: 720,
     backgroundColor: '#f8f8f8'
   },
   header: {
@@ -64,8 +72,6 @@ const styles = StyleSheet.create({
   categoryCard: {
     backgroundColor: '#000',
     borderRadius: 12,
-    width: 80,
-    height: 80,
     marginRight: 12,
     marginBottom: 12,
     justifyContent: 'center',
@@ -76,5 +82,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 12,
     textAlign: 'center',
+    paddingHorizontal: 4,
   },
 });

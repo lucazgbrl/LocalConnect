@@ -1,22 +1,34 @@
 import { Image } from 'expo-image';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
 interface CardServiceProps {
   title: string;
-  imageSrc: string;
+  imageSrc: ImageSourcePropType;
   rating: number;
   tags: string[];
+  variant?: 'compact' | 'featured';
+  style?: ViewStyle;
 }
 
-export default function CardService({ title, imageSrc, rating, tags }: CardServiceProps) {
+export default function CardService({
+  title,
+  imageSrc,
+  rating,
+  tags,
+  variant = 'compact',
+  style,
+}: CardServiceProps) {
+  const isFeatured = variant === 'featured';
+
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, isFeatured && styles.featuredCard, style]}>
       <Image
         source={imageSrc}
-        style={styles.image}
+        style={[styles.image, isFeatured && styles.featuredImage]}
+        contentFit="cover"
       />
 
       <View style={styles.ratingContainer}>
@@ -25,12 +37,12 @@ export default function CardService({ title, imageSrc, rating, tags }: CardServi
       </View>
 
       <View style={styles.content}>
-        <View>
-          <Text style={styles.title}>{title}</Text>
+        <View style={styles.details}>
+          <Text style={styles.title} numberOfLines={2}>{title}</Text>
           {tags && (
             <View style={styles.tags}>
               {tags.map((tag, index) => (
-                <Text key={index} style={styles.tag}>
+                <Text key={index} style={styles.tag} numberOfLines={1}>
                   {tag}
                 </Text>
               ))}
@@ -47,8 +59,7 @@ export default function CardService({ title, imageSrc, rating, tags }: CardServi
 
 const styles = StyleSheet.create({
   card: {
-    width: 300,
-    marginRight: 15,
+    alignSelf: 'flex-start',
     borderRadius: 12,
     overflow: 'hidden',
     backgroundColor: '#fff',
@@ -57,9 +68,15 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
+  featuredCard: {
+    width: '100%',
+  },
   image: {
     width: '100%',
-    height: 150,
+    aspectRatio: 16 / 9,
+  },
+  featuredImage: {
+    aspectRatio: 1.85,
   },
   ratingContainer: {
     position: 'absolute',
@@ -81,7 +98,13 @@ const styles = StyleSheet.create({
   content: {
     padding: 12,
     flexDirection: 'row',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
+    gap: 12,
+  },
+  details: {
+    flex: 1,
+    minWidth: 0,
   },
   title: {
     fontSize: 16,
@@ -95,7 +118,8 @@ const styles = StyleSheet.create({
   tag: {
     fontSize: 12,
     color: '#555',
-    marginHorizontal: 5,
+    marginRight: 10,
+    maxWidth: '100%',
   },
   button: {
     backgroundColor: '#ccc',
@@ -103,6 +127,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: 'flex-start',
     paddingHorizontal: 16,
+    flexShrink: 0,
   },
   buttonText: {
     fontWeight: 'bold',
