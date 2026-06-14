@@ -17,6 +17,7 @@ export default function LoginScreen() {
       name: 'Lucas',
       email: 'lucas@example.com',
       id_user_type: 1,
+      profileImageUrl: require('@/assets/images/cropped.jpg'),
     });
 
     // Navigate to the home screen or perform sign-in

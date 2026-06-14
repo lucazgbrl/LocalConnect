@@ -1,3 +1,5 @@
+import { ImageSourcePropType } from 'react-native';
+
 export type UserTypeId = 1 | 2;
 
 export interface User {
@@ -5,7 +7,7 @@ export interface User {
   name: string;
   email: string;
   id_user_type: UserTypeId;
-  profileImageUrl?: string; // Optional, in case the user doesn't have a profile image
+  profileImageUrl?: ImageSourcePropType; // Optional, in case the user doesn't have a profile image
   createdAt?: Date;
   updatedAt?: Date;
 }

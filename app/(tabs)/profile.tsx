@@ -24,6 +24,18 @@ const PROVIDER_LINKS = [
   { icon: 'settings', label: 'Manage' },
 ];
 
+const CONSUMER_STATS = [
+  { label: 'Bookings', value: '8' },
+  { label: 'Favorites', value: '12' },
+  { label: 'Reviews', value: '4' },
+];
+
+const PROVIDER_STATS = [
+  { label: 'Rating', value: '4.8' },
+  { label: 'Orders', value: '36' },
+  { label: 'Views', value: '1.2k' },
+];
+
 export default function ProfileScreen() {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
@@ -34,6 +46,8 @@ export default function ProfileScreen() {
 
   const isProvider = user.id_user_type === 2;
   const profileLinks = isProvider ? PROVIDER_LINKS : CONSUMER_LINKS;
+  const profileStats = isProvider ? PROVIDER_STATS : CONSUMER_STATS;
+  const profileImageSource = user.profileImageUrl ?? require('@/assets/images/cropped.jpg');
 
   const handleUserTypeChange = (id_user_type: UserTypeId) => {
     setUser({
@@ -46,11 +60,17 @@ export default function ProfileScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.profileContainer}>
         <Image
-          source={user.profileImageUrl}
+          source={profileImageSource}
           style={styles.avatar}
+          contentFit="cover"
         />
         <Text style={styles.name}>{user.name}</Text>
         <Text style={styles.email}>{user.email}</Text>
+        <View style={styles.roleBadge}>
+          <Text style={styles.roleBadgeText}>
+            {isProvider ? 'Service Provider' : 'Consumer'}
+          </Text>
+        </View>
       </View>
 
       <View style={styles.userTypeToggle}>
@@ -89,6 +109,21 @@ export default function ProfileScreen() {
         </TouchableOpacity>
       </View>
 
+      <View style={styles.summaryContainer}>
+        {profileStats.map((stat, index) => (
+          <View
+            key={stat.label}
+            style={[
+              styles.summaryItem,
+              index === profileStats.length - 1 && styles.summaryItemLast,
+            ]}
+          >
+            <Text style={styles.summaryValue}>{stat.value}</Text>
+            <Text style={styles.summaryLabel}>{stat.label}</Text>
+          </View>
+        ))}
+      </View>
+
       <View style={styles.linksContainer}>
         {profileLinks.map((link) => (
           <ProfileLink key={link.label} icon={link.icon} label={link.label} />
@@ -122,10 +157,13 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 104,
+    height: 104,
+    borderRadius: 52,
     marginBottom: 12,
+    backgroundColor: '#ddd',
+    borderWidth: 3,
+    borderColor: '#fff',
   },
   name: {
     fontSize: 20,
@@ -134,6 +172,18 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 14,
     color: '#666',
+  },
+  roleBadge: {
+    marginTop: 10,
+    backgroundColor: '#fff',
+    borderRadius: 999,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+  },
+  roleBadgeText: {
+    color: '#333',
+    fontSize: 12,
+    fontWeight: '700',
   },
   userTypeToggle: {
     flexDirection: 'row',
@@ -161,6 +211,35 @@ const styles = StyleSheet.create({
   },
   userTypeTextActive: {
     color: '#fff',
+  },
+  summaryContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    marginBottom: 24,
+    overflow: 'hidden',
+  },
+  summaryItem: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 8,
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderRightColor: '#ddd',
+  },
+  summaryItemLast: {
+    borderRightWidth: 0,
+  },
+  summaryValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#111',
+  },
+  summaryLabel: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
   },
   linksContainer: {
     backgroundColor: '#fff',
