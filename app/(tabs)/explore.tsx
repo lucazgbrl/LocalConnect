@@ -1,9 +1,26 @@
 import { SearchBar } from "@/components/SearchBar";
-import React from "react";
+import * as Location from "expo-location";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 
 export default function ExploreScreen() {
+  useEffect(() => {
+    async function requestLocationPermission() {
+      const currentPermission = await Location.getForegroundPermissionsAsync();
+
+      if (currentPermission.status === Location.PermissionStatus.GRANTED) {
+        return;
+      }
+
+      if (currentPermission.canAskAgain) {
+        await Location.requestForegroundPermissionsAsync();
+      }
+    }
+
+    requestLocationPermission();
+  }, []);
+
   return (
     <View style={styles.container}>
       <SearchBar />
