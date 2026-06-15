@@ -3,6 +3,7 @@ import CardCategories from '@/components/CardCategories';
 import CardService from '@/components/CardService';
 import CardUser from '@/components/CardUser';
 import ListServices from '@/components/ListServices';
+import Logo from '@/components/Logo';
 import { SearchBar } from '@/components/SearchBar';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useUserStore } from '@/lib/store';
@@ -22,8 +23,9 @@ export default function HomeScreen() {
           profileImageUrl={user?.profileImageUrl}
           onPress={() => router.push('/(tabs)/profile')}
         />
+        <Logo size="small" />
         <TouchableOpacity>
-          <IconSymbol name="menu.fill" size={24} color="#black" />
+          <IconSymbol name="menu.fill" size={24} color="#000" />
         </TouchableOpacity>
       </View>
       <ScrollView contentContainerStyle={styles.container}>

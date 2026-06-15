@@ -1,6 +1,7 @@
 
 import { services } from '@/assets/mocks/services_and_stores_mock';
 import CardService from '@/components/CardService';
+import Logo from '@/components/Logo';
 import { useUserStore } from '@/lib/store';
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
@@ -32,6 +33,7 @@ export default function FavoritesScreen() {
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
+        <Logo size="small" />
         <Text style={styles.title}>My Favorites</Text>
         <View style={styles.badge}>
           <Text style={styles.badgeText}>{favoriteServices.length}</Text>
@@ -86,6 +88,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 40,
+    paddingBottom: 20,
+    gap: 12,
     paddingBottom: 20,
   },
   title: {

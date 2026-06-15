@@ -1,4 +1,5 @@
 import { SearchBar } from "@/components/SearchBar";
+import Logo from "@/components/Logo";
 import * as Location from "expo-location";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -23,6 +24,10 @@ export default function ExploreScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Logo size="small" />
+        <Text style={styles.title}>Explore</Text>
+      </View>
       <SearchBar />
       {/* 3 buttons to order search results: by distance, by rating, by category */}
       <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
@@ -54,6 +59,18 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#f9f9f9",
     paddingTop: 50,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    gap: 12,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#111',
   },
   order_btn: {
     flex: 1,

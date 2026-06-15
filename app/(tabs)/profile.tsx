@@ -1,8 +1,8 @@
 import { users } from '@/assets/mocks/users_mock';
+import Logo from '@/components/Logo';
 import { useUserStore } from '@/lib/store';
 import { UserTypeId } from '@/types/user';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -66,10 +66,7 @@ export default function ProfileScreen() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.illustration}>
-          <Image
-            source={require('@/assets/images/app-logo.png')}
-            style={{ width: 100, height: 100 }}
-          />
+          <Logo size="large" showText={true} />
         </View>
 
         <View style={styles.inputContainer}>
