@@ -2,8 +2,8 @@ import { useUserStore } from '@/lib/store';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import React, { useCallback } from 'react';
-import { ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { ImageSourcePropType, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 
 interface CardServiceProps {
@@ -15,6 +15,24 @@ interface CardServiceProps {
   variant?: 'compact' | 'featured';
   style?: ViewStyle;
   distanceMeters?: number;
+}
+
+function getDefaultDate() {
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  return date;
+}
+
+function isSameDay(a: Date, b: Date) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+
+function formatFullDate(date: Date) {
+  return date.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  });
 }
 
 function CardService({
@@ -34,6 +52,18 @@ function CardService({
   const isFavorited = !!(id && user?.favoriteServiceIds?.includes(id));
   const router = useRouter();
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(getDefaultDate());
+  const [confirmationText, setConfirmationText] = useState('');
+
+  const bookingDates = useMemo(() => {
+    return Array.from({ length: 7 }, (_, index) => {
+      const date = new Date();
+      date.setDate(date.getDate() + index);
+      return date;
+    });
+  }, []);
+
   const handleFavoritePress = useCallback(() => {
     if (!id) return;
     if (!user) {
@@ -42,6 +72,20 @@ function CardService({
     }
     toggle(id);
   }, [id, router, toggle, user]);
+
+  const openBookingModal = useCallback(() => {
+    setSelectedDate(getDefaultDate());
+    setModalVisible(true);
+  }, []);
+
+  const closeBookingModal = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
+  const handleSchedule = useCallback(() => {
+    setConfirmationText(`Visit scheduled for ${formatFullDate(selectedDate)}`);
+    setModalVisible(false);
+  }, [selectedDate]);
 
   return (
     <View style={[styles.card, isFeatured && styles.featuredCard, style]}>
@@ -79,11 +123,50 @@ function CardService({
               ))}
             </View>
           )}
+          {confirmationText ? (
+            <Text style={styles.confirmationText}>{confirmationText}</Text>
+          ) : null}
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={openBookingModal} accessibilityLabel="Open booking modal">
           <Text style={styles.buttonText}>Book now</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal transparent animationType="slide" visible={modalVisible} onRequestClose={closeBookingModal}>
+        <Pressable style={styles.modalOverlay} onPress={closeBookingModal}>
+          <Pressable style={[styles.modalContainer, isFeatured && styles.featuredModal]} onPress={(event) => event.stopPropagation()}>
+            <Text style={styles.modalTitle}>Schedule a visit</Text>
+            <Text style={styles.modalSubtitle}>Choose a date for your appointment</Text>
+            <View style={styles.calendarGrid}>
+              {bookingDates.map((date) => {
+                const selected = isSameDay(date, selectedDate);
+                return (
+                  <TouchableOpacity
+                    key={date.toISOString()}
+                    style={[styles.dateButton, selected && styles.dateButtonSelected]}
+                    onPress={() => setSelectedDate(date)}
+                  >
+                    <Text style={[styles.dateShort, selected && styles.dateTextSelected]}>
+                      {date.toLocaleDateString('en-US', { weekday: 'short' })}
+                    </Text>
+                    <Text style={[styles.dateDay, selected && styles.dateTextSelected]}>
+                      {date.getDate()}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            <View style={styles.modalActions}>
+              <TouchableOpacity style={styles.cancelButton} onPress={closeBookingModal}>
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.scheduleButton} onPress={handleSchedule}>
+                <Text style={styles.scheduleButtonText}>Schedule Visit</Text>
+              </TouchableOpacity>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -183,5 +266,96 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
     marginTop: 4,
+  },
+  confirmationText: {
+    marginTop: 10,
+    color: '#0a7d4f',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContainer: {
+    width: '100%',
+    maxWidth: 420,
+    borderRadius: 18,
+    backgroundColor: '#fff',
+    padding: 20,
+  },
+  featuredModal: {
+    maxWidth: 560,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 6,
+  },
+  modalSubtitle: {
+    fontSize: 13,
+    color: '#666',
+    marginBottom: 16,
+  },
+  calendarGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    justifyContent: 'space-between',
+    marginBottom: 18,
+  },
+  dateButton: {
+    width: '30%',
+    backgroundColor: '#f2f2f2',
+    borderRadius: 12,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  dateButtonSelected: {
+    backgroundColor: '#000',
+  },
+  dateShort: {
+    fontSize: 12,
+    textTransform: 'uppercase',
+    color: '#333',
+  },
+  dateDay: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 4,
+    color: '#111',
+  },
+  dateTextSelected: {
+    color: '#fff',
+  },
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: '#eee',
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  cancelButtonText: {
+    color: '#333',
+    fontWeight: '600',
+  },
+  scheduleButton: {
+    flex: 1,
+    backgroundColor: '#000',
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  scheduleButtonText: {
+    color: '#fff',
+    fontWeight: '700',
   },
 });
