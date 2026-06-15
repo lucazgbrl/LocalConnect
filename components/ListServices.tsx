@@ -25,6 +25,7 @@ export default function ListServices({
         {services.map((item) => (
           <CardService
             key={item.id}
+            id={item.id}
             title={item.name}
             imageSrc={item.imageSrc}
             rating={item.rating}
@@ -49,6 +50,7 @@ export default function ListServices({
       showsHorizontalScrollIndicator={false}
       renderItem={({ item }) => (
         <CardService
+            id={item.id}
           title={item.name}
           imageSrc={item.imageSrc}
           rating={item.rating}

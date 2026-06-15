@@ -84,6 +84,7 @@ export default function ExploreScreen() {
           filtered.map((s) => (
             <View key={s.id} style={{ marginBottom: 12 }}>
               <CardService
+                id={s.id}
                 title={s.name}
                 imageSrc={s.imageSrc}
                 rating={s.rating}

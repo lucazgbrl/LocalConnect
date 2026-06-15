@@ -1,10 +1,13 @@
+import { useUserStore } from '@/lib/store';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 
 interface CardServiceProps {
+  id?: string;
   title: string;
   imageSrc: ImageSourcePropType;
   rating: number;
@@ -16,6 +19,7 @@ interface CardServiceProps {
 
 export default function CardService({
   title,
+  id,
   imageSrc,
   rating,
   tags,
@@ -24,6 +28,20 @@ export default function CardService({
   distanceMeters,
 }: CardServiceProps) {
   const isFeatured = variant === 'featured';
+
+  const user = useUserStore((s) => s.user);
+  const toggle = useUserStore((s) => s.toggleFavorite);
+  const isFavorited = !!(id && user?.favoriteServiceIds?.includes(id));
+  const router = useRouter();
+
+  const handleFavoritePress = () => {
+    if (!id) return;
+    if (!user) {
+      router.push('/(tabs)/profile');
+      return;
+    }
+    toggle(id);
+  };
 
   return (
     <View style={[styles.card, isFeatured && styles.featuredCard, style]}>
@@ -37,6 +55,14 @@ export default function CardService({
         <Ionicons name="thumbs-up" size={14} color="#000" />
         <Text style={styles.ratingText}>{rating}</Text>
       </View>
+
+      <TouchableOpacity
+        style={styles.favoriteButton}
+        onPress={handleFavoritePress}
+        accessibilityLabel={isFavorited ? 'Remove favorite' : 'Add favorite'}
+      >
+        <Ionicons name={isFavorited ? 'heart' : 'heart-outline'} size={18} color={isFavorited ? '#ff4d4f' : '#fff'} />
+      </TouchableOpacity>
 
       <View style={styles.content}>
         <View style={styles.details}>
@@ -104,6 +130,15 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     fontSize: 12,
     fontWeight: 'bold',
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    padding: 8,
+    borderRadius: 18,
+    zIndex: 10,
   },
   content: {
     padding: 12,

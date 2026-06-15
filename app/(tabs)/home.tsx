@@ -29,6 +29,7 @@ export default function HomeScreen() {
               Featured Merchant
             </Text>
             <CardService
+              id={services[0].id}
               title={services[0].name}
               imageSrc={services[0].imageSrc}
               rating={services[0].rating}
@@ -42,7 +43,8 @@ export default function HomeScreen() {
               {services.map((service) => (
                 <View key={service.id} style={styles.serviceWrapper}>
                   <CardService
-                    title={service.name}
+                      id={service.id}
+                      title={service.name}
                     imageSrc={service.imageSrc}
                     rating={service.rating}
                     tags={service.tags}

@@ -57,6 +57,7 @@ export default function FavoritesScreen() {
           {favoriteServices.map((service) => (
             <View key={service.id} style={styles.serviceWrapper}>
               <CardService
+                id={service.id}
                 title={service.name}
                 imageSrc={service.imageSrc}
                 rating={service.rating}
