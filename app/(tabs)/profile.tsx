@@ -1,11 +1,11 @@
+import { users } from '@/assets/mocks/users_mock';
 import { useUserStore } from '@/lib/store';
 import { UserTypeId } from '@/types/user';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { Redirect } from 'expo-router';
-import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { FontAwesome } from '@expo/vector-icons';
 
 const CONSUMER_LINKS = [
   { icon: 'calendar', label: 'My Bookings' },
@@ -40,9 +40,92 @@ const PROVIDER_STATS = [
 export default function ProfileScreen() {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   if (!user) {
-    return <Redirect href="/login" />;
+    const handleSignIn = () => {
+      const trimmedEmail = email.trim().toLowerCase();
+      const foundUser = users.find((item) => item.email.toLowerCase() === trimmedEmail);
+
+      if (!foundUser) {
+        setError('Usuário não encontrado. Use um e-mail válido.');
+        return;
+      }
+
+      if (foundUser.password !== password) {
+        setError('Senha incorreta. Tente novamente.');
+        return;
+      }
+
+      setError('');
+      setUser(foundUser);
+    };
+
+    return (
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.illustration}>
+          <Image
+            source={require('@/assets/images/app-logo.png')}
+            style={{ width: 100, height: 100 }}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <MaterialIcons name="email" size={20} />
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            style={styles.input}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <MaterialIcons name="lock" size={20} />
+          <TextInput
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            style={styles.input}
+          />
+        </View>
+
+        {!!error && <Text style={styles.error}>{error}</Text>}
+
+        <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
+          <Text style={styles.signInText}>Sign In</Text>
+        </TouchableOpacity>
+
+        <View style={styles.orContainer}>
+          <View style={styles.line} />
+          <Text style={styles.or}>OR SIGN WITH</Text>
+          <View style={styles.line} />
+        </View>
+
+        <View style={styles.socialContainer}>
+          <TouchableOpacity style={styles.socialButton}>
+            <FontAwesome name="facebook" size={18} color="#1877F2" />
+            <Text style={styles.socialText}>Facebook</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.socialButton}>
+            <FontAwesome name="google" size={18} color="#DB4437" />
+            <Text style={styles.socialText}>Google</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.footer}>
+          <Text>New here? </Text>
+          <TouchableOpacity>
+            <Text style={styles.signUp}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    );
   }
 
   const isProvider = user.id_user_type === 2;
@@ -165,9 +248,10 @@ function ProfileLink({ icon, label }: { icon: string; label: string }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 50,
+    flexGrow: 1,
+    justifyContent: 'center',
     paddingHorizontal: 16,
-    paddingBottom: 24,
+    paddingVertical: 24,
     backgroundColor: '#f8f8f8',
   },
   profileContainer: {
@@ -182,6 +266,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     borderWidth: 3,
     borderColor: '#fff',
+  },
+  avatarPlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#999',
   },
   name: {
     fontSize: 20,
@@ -291,6 +380,82 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 14,
     alignItems: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 12,
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: '#111',
+  },
+  error: {
+    color: '#c00',
+    marginBottom: 12,
+  },
+  signInButton: {
+    backgroundColor: '#000',
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  signInText: {
+    color: '#fff',
+    fontWeight: '700',
+  },
+  illustration: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  orContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+    width: '100%',
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ccc',
+  },
+  or: {
+    marginHorizontal: 10,
+    fontSize: 12,
+    color: '#888',
+  },
+  socialContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  socialButton: {
+    backgroundColor: '#eee',
+    padding: 15,
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  socialText: {
+    marginTop: 6,
+    fontWeight: '600',
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  signUp: {
+    fontWeight: 'bold',
   },
   logoutText: {
     color: '#fff',

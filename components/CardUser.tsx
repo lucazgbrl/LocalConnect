@@ -1,17 +1,18 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ImageSourcePropType } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type CardUserProps = {
   userName: string;
   profileImageUrl?: ImageSourcePropType;
+  onPress?: () => void;
 };
 
-export default function CardUser({ userName, profileImageUrl }: CardUserProps) {
+export default function CardUser({ userName, profileImageUrl, onPress }: CardUserProps) {
   return (
     <View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
         {profileImageUrl ? (
           <Image
             source={profileImageUrl as any}
@@ -23,7 +24,8 @@ export default function CardUser({ userName, profileImageUrl }: CardUserProps) {
           </View>
         )}
         <Text style={styles.userName}>
-          Welcome, {userName}!</Text>
+          Welcome, {userName}!
+        </Text>
       </TouchableOpacity>
     </View>
   );

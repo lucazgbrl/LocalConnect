@@ -2,21 +2,25 @@ import { services } from '@/assets/mocks/services_and_stores_mock';
 import CardCategories from '@/components/CardCategories';
 import CardService from '@/components/CardService';
 import CardUser from '@/components/CardUser';
-import { useUserStore } from '@/lib/store';
 import ListServices from '@/components/ListServices';
 import { SearchBar } from '@/components/SearchBar';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { useUserStore } from '@/lib/store';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
   const user = useUserStore((state) => state.user);
+  const router = useRouter();
+
   return (
     <>
       <View style={styles.header}>
         <CardUser
           userName={user?.name ?? 'Guest'}
           profileImageUrl={user?.profileImageUrl}
+          onPress={() => router.push('/(tabs)/profile')}
         />
         <TouchableOpacity>
           <IconSymbol name="menu.fill" size={24} color="#black" />
