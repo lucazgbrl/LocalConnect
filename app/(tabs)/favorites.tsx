@@ -2,10 +2,10 @@
 import { services } from '@/assets/mocks/services_and_stores_mock';
 import CardService from '@/components/CardService';
 import { useUserStore } from '@/lib/store';
-import React, { useMemo, useState } from 'react';
+import { FontAwesome } from '@expo/vector-icons';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { FontAwesome } from '@expo/vector-icons';
 
 export default function FavoritesScreen() {
   const user = useUserStore((state) => state.user);
