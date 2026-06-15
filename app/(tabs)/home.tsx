@@ -2,7 +2,6 @@ import { services } from '@/assets/mocks/services_and_stores_mock';
 import CardCategories from '@/components/CardCategories';
 import CardService from '@/components/CardService';
 import CardUser from '@/components/CardUser';
-import ListServices from '@/components/ListServices';
 import Logo from '@/components/Logo';
 import { SearchBar } from '@/components/SearchBar';
 import { IconSymbol } from '@/components/ui/IconSymbol';
@@ -28,7 +27,7 @@ export default function HomeScreen() {
           <IconSymbol name="menu.fill" size={24} color="#000" />
         </TouchableOpacity>
       </View>
-      <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
           <SearchBar />
           <View style={styles.featuredSection}>
             <Text style={styles.sectionTitle}>
@@ -40,10 +39,23 @@ export default function HomeScreen() {
               rating={services[0].rating}
               tags={services[0].tags}
               variant="featured"
+              style={{ width: '100%' }}
             />
           </View>
-          <CardCategories />
-          <ListServices contentPaddingHorizontal={0} orientation="vertical" />
+            <CardCategories />
+            <View style={styles.servicesList}>
+              {services.map((service) => (
+                <View key={service.id} style={styles.serviceWrapper}>
+                  <CardService
+                    title={service.name}
+                    imageSrc={service.imageSrc}
+                    rating={service.rating}
+                    tags={service.tags}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              ))}
+            </View>
       </ScrollView>
     </>
   );
@@ -51,7 +63,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems:'center',
+    alignItems: 'center',
     backgroundColor: '#f8f8f8',
     paddingHorizontal: 20,
     gap: 20,
@@ -68,7 +80,15 @@ const styles = StyleSheet.create({
   },
   featuredSection: {
     width: '100%',
-    maxWidth: 720,
+    paddingHorizontal: 20,
+  },
+  servicesList: {
+    width: '100%',
+    paddingHorizontal: 20,
+    gap: 16,
+  },
+  serviceWrapper: {
+    position: 'relative',
   },
   sectionTitle: {
     fontSize: 16,

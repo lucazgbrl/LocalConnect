@@ -55,8 +55,8 @@ export default function CardCategories() {
 const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
-    maxWidth: 720,
     backgroundColor: '#f8f8f8',
+    paddingHorizontal: 20,
   },
   header: {
     flexDirection: 'row',
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
     paddingBottom: 4,
+    paddingRight: 20,
   },
   categoryCard: {
     flexDirection: 'row',
