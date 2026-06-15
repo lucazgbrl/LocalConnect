@@ -1,20 +1,27 @@
 import { Image } from 'expo-image';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ImageSourcePropType } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 type CardUserProps = {
   userName: string;
-  profileImageUrl: string;
+  profileImageUrl?: ImageSourcePropType;
 };
 
 export default function CardUser({ userName, profileImageUrl }: CardUserProps) {
   return (
     <View>
       <TouchableOpacity style={styles.button}>
-        <Image
-          source={profileImageUrl}
-          style={styles.profileImage}
-        />
+        {profileImageUrl ? (
+          <Image
+            source={profileImageUrl as any}
+            style={styles.profileImage}
+          />
+        ) : (
+          <View style={[styles.profileImage, styles.avatarPlaceholder]}>
+            <FontAwesome name="user" size={20} color="#fff" />
+          </View>
+        )}
         <Text style={styles.userName}>
           Welcome, {userName}!</Text>
       </TouchableOpacity>
@@ -33,6 +40,12 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     marginRight: 10,
+    backgroundColor: '#ccc',
+  },
+  avatarPlaceholder: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#888',
   },
   userName: {
     fontSize: 16,

@@ -5,6 +5,7 @@ import { Redirect } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { FontAwesome } from '@expo/vector-icons';
 
 const CONSUMER_LINKS = [
   { icon: 'calendar', label: 'My Bookings' },
@@ -47,7 +48,7 @@ export default function ProfileScreen() {
   const isProvider = user.id_user_type === 2;
   const profileLinks = isProvider ? PROVIDER_LINKS : CONSUMER_LINKS;
   const profileStats = isProvider ? PROVIDER_STATS : CONSUMER_STATS;
-  const profileImageSource = user.profileImageUrl ?? require('@/assets/images/cropped.jpg');
+  const profileImageSource = user.profileImageUrl;
 
   const handleUserTypeChange = (id_user_type: UserTypeId) => {
     setUser({
@@ -56,14 +57,25 @@ export default function ProfileScreen() {
     });
   };
 
+  const handleLogout = () => {
+    setUser(null);
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.profileContainer}>
-        <Image
-          source={profileImageSource}
-          style={styles.avatar}
-          contentFit="cover"
-        />
+        {profileImageSource ? (
+          <Image
+            source={profileImageSource as any}
+            style={styles.avatar}
+            contentFit="cover"
+          />
+        ) : (
+          <View style={[styles.avatar, styles.avatarPlaceholder]}>
+            <FontAwesome name="user" size={40} color="#fff" />
+          </View>
+        )}
+
         <Text style={styles.name}>{user.name}</Text>
         <Text style={styles.email}>{user.email}</Text>
         <View style={styles.roleBadge}>
@@ -128,6 +140,12 @@ export default function ProfileScreen() {
         {profileLinks.map((link) => (
           <ProfileLink key={link.label} icon={link.icon} label={link.label} />
         ))}
+      </View>
+
+      <View style={styles.logoutContainer}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -263,5 +281,20 @@ const styles = StyleSheet.create({
   linkLabel: {
     fontSize: 16,
     color: '#333',
+  },
+  logoutContainer: {
+    marginTop: 24,
+    paddingHorizontal: 16,
+  },
+  logoutButton: {
+    backgroundColor: '#ff4d4f',
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  logoutText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
   },
 });

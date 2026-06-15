@@ -2,6 +2,7 @@ import { services } from '@/assets/mocks/services_and_stores_mock';
 import CardCategories from '@/components/CardCategories';
 import CardService from '@/components/CardService';
 import CardUser from '@/components/CardUser';
+import { useUserStore } from '@/lib/store';
 import ListServices from '@/components/ListServices';
 import { SearchBar } from '@/components/SearchBar';
 import { IconSymbol } from '@/components/ui/IconSymbol';
@@ -9,12 +10,13 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
+  const user = useUserStore((state) => state.user);
   return (
     <>
       <View style={styles.header}>
         <CardUser
-          userName="Lucas"
-          profileImageUrl={require('@/assets/images/cropped.jpg')}
+          userName={user?.name ?? 'Guest'}
+          profileImageUrl={user?.profileImageUrl}
         />
         <TouchableOpacity>
           <IconSymbol name="menu.fill" size={24} color="#black" />

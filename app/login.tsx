@@ -1,32 +1,36 @@
 import { useUserStore } from '@/lib/store';
+import { users } from '@/assets/mocks/users_mock';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 export default function LoginScreen() {
   const router = useRouter();
   const setUser = useUserStore((state) => state.setUser);
-  const user = useUserStore((state) => state.user);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSignIn = () => {
-    // Set user data in the store
-    setUser({
-      id: '1',
-      name: 'Lucas',
-      email: 'lucas@example.com',
-      id_user_type: 1,
-      profileImageUrl: require('@/assets/images/cropped.jpg'),
-    });
+    const trimmedEmail = email.trim().toLowerCase();
+    const foundUser = users.find((item) => item.email.toLowerCase() === trimmedEmail);
 
-    // Navigate to the home screen or perform sign-in
+    if (!foundUser) {
+      setError('Usuário não encontrado. Use um e-mail válido do mock.');
+      return;
+    }
+
+    if (foundUser.password !== password) {
+      setError('Senha incorreta. Tente novamente.');
+      return;
+    }
+
+    setError('');
+    setUser(foundUser);
     router.replace('/(tabs)/profile');
   };
-
-  useEffect(() => {
-    console.log('User:', user);
-  }, [user]);
 
 
   const handleBackToHome = () => {
@@ -44,14 +48,29 @@ export default function LoginScreen() {
       </View>
 
       <View style={styles.inputContainer}>
-        <Icon name="email" size={20} />
-        <TextInput placeholder="Email" style={styles.input} />
+        <MaterialIcons name="email" size={20} />
+        <TextInput
+          placeholder="Email"
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
       </View>
 
       <View style={styles.inputContainer}>
-        <Icon name="lock" size={20} />
-        <TextInput placeholder="Password" secureTextEntry style={styles.input} />
+        <MaterialIcons name="lock" size={20} />
+        <TextInput
+          placeholder="Password"
+          secureTextEntry
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+        />
       </View>
+
+      {!!error && <Text style={styles.error}>{error}</Text>}
 
       <TouchableOpacity>
         <Text style={styles.forgot}>Forgot your password?</Text>
@@ -69,10 +88,12 @@ export default function LoginScreen() {
 
       <View style={styles.socialContainer}>
         <TouchableOpacity style={styles.socialButton}>
-          <Text>Facebook</Text>
+          <FontAwesome name="facebook" size={18} color="#1877F2" />
+          <Text style={styles.socialText}>Facebook</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
-          <Text>Google</Text>
+          <FontAwesome name="google" size={18} color="#DB4437" />
+          <Text style={styles.socialText}>Google</Text>
         </TouchableOpacity>
       </View>
 
@@ -92,6 +113,7 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: '#fff' },
+  error: { color: '#c00', marginTop: 8 },
   orContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -118,6 +140,7 @@ const styles = StyleSheet.create({
   },
   socialContainer: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
   socialButton: { backgroundColor: '#eee', padding: 15, borderRadius: 5, flex: 1, alignItems: 'center', marginHorizontal: 5 },
+  socialText: { marginTop: 6, fontWeight: '600' },
   footer: { flexDirection: 'row', marginTop: 20 },
   signUp: { fontWeight: 'bold' },
   backToHomeButton: {
