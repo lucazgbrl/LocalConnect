@@ -1,100 +1,60 @@
 # 🚀 LocalConnect
 
-LocalConnect é uma plataforma que conecta consumidores a comércios locais, facilitando a descoberta de produtos e serviços próximos com base em geolocalização.
+LocalConnect is an Expo-powered React Native app for discovering local services and merchants.
 
-A proposta é fortalecer o comércio de bairro, criando uma experiência semelhante a grandes marketplaces — porém focada no contexto local.
-
----
-
-## 📌 Visão Geral
-
-O projeto tem como objetivo:
-
-- Aproximar consumidores de lojistas da região
-- Permitir busca de produtos próximos em tempo real
-- Exibir lojas em mapa com base na localização do usuário
-- Criar uma vitrine digital acessível para pequenos comércios
+It is built as a mobile-first experience that connects users to nearby service providers with category filtering, search, and booking flow.
 
 ---
 
-## 🧠 Conceito
+## 📌 Current Implementation
 
-Diferente de marketplaces tradicionais, o LocalConnect foca em:
+This workspace currently includes:
 
-- 📍 **Geolocalização real**
-- 🏪 **Comércio local (bairro/região)**
-- ⚡ **Descoberta rápida de produtos**
-- 🤝 **Incentivo à economia local**
-
----
-
-## 🏗️ Arquitetura (alto nível)
-
-O sistema é dividido em:
-
-### Frontend
-- Interface moderna inspirada em apps como marketplaces e mapas
-- Exibição de produtos, lojas e localização
-
-### Backend
-- API responsável por:
-  - Gestão de usuários
-  - Cadastro de lojas
-  - Produtos
-  - Geolocalização
-
-### Banco de Dados
-- Estrutura relacional para:
-  - Usuários
-  - Lojas
-  - Produtos
-  - Endereços
+- A **Home** tab with a featured merchant, category filter, and incremental service loading
+- An **Explore** tab with search, sorting by nearby / top rating, and paginated service list
+- A **Favorites** tab for favorited services
+- A **Profile** tab with basic user state handling
+- A **booking modal** on service cards for choosing a date and confirming or canceling a visit
+- Zustand store for user / favorites state
 
 ---
 
-## ⚙️ Tecnologias
+## 🧪 What is implemented today
 
-Principais tecnologias utilizadas:
-
-- **Frontend**
-  - React / Next.js
-  - Tailwind CSS
-
-- **Backend**
-  - Node.js
-  - Fastify
-
-- **Banco de Dados**
-  - MySQL
-
-- **Outros**
-  - APIs de mapa (Google Maps ou similar)
-  - Geolocalização
+- Local service data rendering via `FlatList`
+- Category selection and filtering in Home
+- Search and sort controls in Explore
+- Incremental loading of service cards
+- Memoized item rendering for better list performance
+- Booking modal UI with date selection and schedule/cancel actions
+- Favorites toggle support for service cards
 
 ---
 
-## 📦 Funcionalidades
+## 🧰 Tech Stack
 
-- [ ] Cadastro de usuários
-- [ ] Cadastro de lojistas
-- [ ] Criação de lojas
-- [ ] Cadastro de produtos
-- [ ] Busca por produtos próximos
-- [ ] Visualização em mapa
-- [ ] Sistema de localização do usuário
+- **React Native**
+- **Expo** with **expo-router**
+- **Zustand** for state management
+- **expo-image** for image rendering
+- **TypeScript**
 
 ---
 
-## 🚀 Como rodar o projeto
-
-### Pré-requisitos
-
-- Node.js instalado
-- MySQL rodando
-- Gerenciador de pacotes (npm ou yarn)
-
-### Clone o projeto
+## 🚀 Run the project
 
 ```bash
-git clone https://github.com/lucazgbrl/LocalConnect.git
 cd LocalConnect
+npm install
+npm run start
+```
+
+Then use the Expo CLI to run on a simulator or device:
+
+```bash
+npm run ios
+npm run android
+npm run web
+```
+
+---
