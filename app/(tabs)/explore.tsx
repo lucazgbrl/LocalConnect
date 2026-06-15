@@ -1,61 +1,109 @@
-import { SearchBar } from "@/components/SearchBar";
+import { services } from '@/assets/mocks/services_and_stores_mock';
+import CardService from '@/components/CardService';
 import Logo from "@/components/Logo";
-import * as Location from "expo-location";
-import React, { useEffect } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SearchBar } from "@/components/SearchBar";
+import React, { useEffect, useMemo, useState } from "react";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 
 export default function ExploreScreen() {
   useEffect(() => {
     async function requestLocationPermission() {
-      const currentPermission = await Location.getForegroundPermissionsAsync();
+      const Loc: any = Location;
+      const currentPermission = await Loc.getForegroundPermissionsAsync?.();
 
-      if (currentPermission.status === Location.PermissionStatus.GRANTED) {
+      if (currentPermission?.status === Loc.PermissionStatus?.GRANTED) {
         return;
       }
 
       if (currentPermission.canAskAgain) {
-        await Location.requestForegroundPermissionsAsync();
+        await Loc.requestForegroundPermissionsAsync?.();
       }
     }
 
     requestLocationPermission();
   }, []);
 
+  const [query, setQuery] = useState('');
+  const [mode, setMode] = useState<'default' | 'distance' | 'rating'>('default');
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let list = services.filter((s) => {
+      if (!q) return true;
+      return (
+        s.name.toLowerCase().includes(q) ||
+        (s.tags || []).some((t) => t.toLowerCase().includes(q)) ||
+        (s.description || '').toLowerCase().includes(q)
+      );
+    });
+
+    if (mode === 'distance') {
+      list = list.slice().sort((a, b) => (a.distanceMeters ?? Infinity) - (b.distanceMeters ?? Infinity));
+    } else if (mode === 'rating') {
+      list = list.slice().sort((a, b) => b.rating - a.rating);
+    }
+
+    return list;
+  }, [query, mode]);
+
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={[styles.containerInner, { paddingBottom: 40 }]}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.header}>
         <Logo size="small" />
         <Text style={styles.title}>Explore</Text>
       </View>
-      <SearchBar />
-      {/* 3 buttons to order search results: by distance, by rating, by category */}
-      <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
-        <TouchableOpacity style={styles.order_btn}>
-          <Text style={{ color: "#fff", textAlign: "center" }}>By Distance</Text>
+      <SearchBar value={query} onChangeText={setQuery} placeholder="Search services, tags..." />
+
+      <View style={styles.controlsRow}>
+        <TouchableOpacity
+          style={[styles.order_btn, mode === 'distance' && styles.order_btn_active]}
+          onPress={() => setMode((m) => (m === 'distance' ? 'default' : 'distance'))}
+        >
+          <Text style={styles.orderText}>Perto de mim</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.order_btn}>
-          <Text style={{ color: "#fff", textAlign: "center" }}>By Rating</Text>
+
+        <TouchableOpacity
+          style={[styles.order_btn, mode === 'rating' && styles.order_btn_active]}
+          onPress={() => setMode((m) => (m === 'rating' ? 'default' : 'rating'))}
+        >
+          <Text style={styles.orderText}>Top rating</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.order_btn}>
-          <Text style={{ color: "#fff", textAlign: "center" }}>By Category</Text>
-        </TouchableOpacity>
+
+        {/* Removed default button (it simply reset sorting) */}
       </View>
-      {/* List of search results (placeholder) */}
-      <View style={{ marginTop: 20 }}>
-        <Text>Search results will be displayed here.</Text>
-        {/* Placeholder for search results */}
-        <View style={{ marginTop: 10 }}>
+
+      <View style={{ marginTop: 20, paddingHorizontal: 16 }}>
+        {filtered.length === 0 ? (
           <Text>No results found.</Text>
-        </View>
+        ) : (
+          filtered.map((s) => (
+            <View key={s.id} style={{ marginBottom: 12 }}>
+              <CardService
+                title={s.name}
+                imageSrc={s.imageSrc}
+                rating={s.rating}
+                tags={s.tags}
+                distanceMeters={s.distanceMeters}
+                style={{ width: '100%' }}
+              />
+            </View>
+          ))
+        )}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scroll: {
     flex: 1,
+  },
+  containerInner: {
     padding: 16,
     backgroundColor: "#f9f9f9",
     paddingTop: 50,
@@ -78,5 +126,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     backgroundColor: "#000",
+  },
+  controlsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+  },
+  order_btn_active: {
+    backgroundColor: '#333',
+  },
+  orderText: {
+    color: '#fff',
+    textAlign: 'center',
   },
 });

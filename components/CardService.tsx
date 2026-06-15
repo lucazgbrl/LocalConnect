@@ -11,6 +11,7 @@ interface CardServiceProps {
   tags: string[];
   variant?: 'compact' | 'featured';
   style?: ViewStyle;
+  distanceMeters?: number;
 }
 
 export default function CardService({
@@ -20,6 +21,7 @@ export default function CardService({
   tags,
   variant = 'compact',
   style,
+  distanceMeters,
 }: CardServiceProps) {
   const isFeatured = variant === 'featured';
 
@@ -39,6 +41,9 @@ export default function CardService({
       <View style={styles.content}>
         <View style={styles.details}>
           <Text style={styles.title} numberOfLines={2}>{title}</Text>
+          {typeof distanceMeters === 'number' && (
+            <Text style={styles.distanceText}>{formatDistance(distanceMeters)}</Text>
+          )}
           {tags && (
             <View style={styles.tags}>
               {tags.map((tag, index) => (
@@ -55,6 +60,11 @@ export default function CardService({
       </View>
     </View>
   );
+}
+
+function formatDistance(meters: number) {
+  if (meters < 1000) return `${meters} m`;
+  return `${(meters / 1000).toFixed(1)} km`;
 }
 
 const styles = StyleSheet.create({
@@ -131,5 +141,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: 'bold',
+  },
+  distanceText: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 4,
   },
 });

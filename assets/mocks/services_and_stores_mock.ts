@@ -8,6 +8,7 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_barber.jpg"),
     rating: 4.5,
     tags: ["Haircut", "Barber", "Grooming"],
+    distanceMeters: 450,
   },
   {
     id: "2",
@@ -16,6 +17,7 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_gym.jpg"),
     rating: 4.7,
     tags: ["Gym", "Fitness", "Health"],
+    distanceMeters: 1200,
   },
   {
     id: "3",
@@ -24,6 +26,7 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_ballet.jpg"),
     rating: 4.8,
     tags: ["Dance", "Ballet", "Class"],
+    distanceMeters: 2600,
   },
   {
     id: "4",
@@ -32,6 +35,7 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_yoga.jpg"),
     rating: 4.6,
     tags: ["Yoga", "Wellness", "Meditation"],
+    distanceMeters: 800,
   },
   {
     id: "5",
@@ -40,6 +44,7 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_restaurant.jpg"),
     rating: 4.9,
     tags: ["Restaurant", "Lunch", "Dinner"],
+    distanceMeters: 150,
   },
   {
     id: "6",
@@ -48,6 +53,7 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_spa.jpg"),
     rating: 4.8,
     tags: ["Beauty", "Massage", "Spa"],
+    distanceMeters: 2300,
   },
   {
     id: "7",
@@ -56,6 +62,7 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_cleaning.jpg"),
     rating: 4.7,
     tags: ["Cleaning", "Home", "Routine"],
+    distanceMeters: 1800,
   },
   {
     id: "8",
@@ -64,6 +71,7 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_pet.jpg"),
     rating: 4.9,
     tags: ["Pets", "Grooming", "Walks"],
+    distanceMeters: 600,
   },
   {
     id: "9",
@@ -72,6 +80,7 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_tutoring.jpg"),
     rating: 4.6,
     tags: ["Education", "Lessons", "Tests"],
+    distanceMeters: 3200,
   },
   {
     id: "10",
@@ -80,5 +89,6 @@ export const services: Service[] = [
     imageSrc: require("@/assets/images/service_cafe.jpg"),
     rating: 4.7,
     tags: ["Cafe", "Coffee", "Bakery"],
+    distanceMeters: 300,
   },
 ];

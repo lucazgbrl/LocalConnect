@@ -3,13 +3,21 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import React from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
-export function SearchBar() {
+interface SearchBarProps {
+  value?: string;
+  onChangeText?: (text: string) => void;
+  placeholder?: string;
+}
+
+export function SearchBar({ value, onChangeText, placeholder = 'Search...' }: SearchBarProps) {
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <IconSymbol name="search.fill" size={24} color="black" />
         <TextInput
-          placeholder="Search..."
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
           style={styles.input}
           placeholderTextColor="#888"
         />

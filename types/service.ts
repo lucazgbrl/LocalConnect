@@ -7,4 +7,5 @@ export default interface Service {
   imageSrc: ImageSourcePropType;
   rating: number;
   tags: string[];
+  distanceMeters?: number;
 }
