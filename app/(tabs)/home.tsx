@@ -3,14 +3,75 @@ import CardCategories from '@/components/CardCategories';
 import CardService from '@/components/CardService';
 import CardUser from '@/components/CardUser';
 import Logo from '@/components/Logo';
+import ServiceListItem from '@/components/ServiceListItem';
 import { useUserStore } from '@/lib/store';
+import type Service from '@/types/service';
 import { useRouter } from 'expo-router';
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import type { ListRenderItem } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+
+const INITIAL_SERVICES_COUNT = 6;
+const LOAD_MORE_STEP = 4;
 
 export default function HomeScreen() {
   const user = useUserStore((state) => state.user);
   const router = useRouter();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_SERVICES_COUNT);
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_SERVICES_COUNT);
+  }, [selectedCategory]);
+
+  const categoryKeyFor = (categoryName: string | null) => {
+    if (!categoryName) return null;
+    const key = categoryName.toLowerCase();
+    return key.endsWith('s') ? key.slice(0, -1) : key;
+  };
+
+  const selectedKey = categoryKeyFor(selectedCategory);
+  const filteredServices = useMemo(
+    () =>
+      selectedKey
+        ? services.filter((s) => s.tags.some((t) => t.toLowerCase().includes(selectedKey)))
+        : services,
+    [selectedKey]
+  );
+
+  const visibleServices = filteredServices.slice(0, visibleCount);
+  const hasMore = visibleServices.length < filteredServices.length;
+
+  const handleLoadMore = useCallback(() => {
+    if (!hasMore) return;
+    setVisibleCount((count) => Math.min(count + LOAD_MORE_STEP, filteredServices.length));
+  }, [hasMore, filteredServices.length]);
+
+  const listHeader = useMemo(
+    () => (
+      <>
+        <View style={styles.featuredSection}>
+          <Text style={styles.sectionTitle}>Featured Merchant</Text>
+          <CardService
+            id={services[0].id}
+            title={services[0].name}
+            imageSrc={services[0].imageSrc}
+            rating={services[0].rating}
+            tags={services[0].tags}
+            variant="featured"
+            style={{ width: '100%' }}
+          />
+        </View>
+        <CardCategories selectedCategory={selectedCategory} onSelect={setSelectedCategory} />
+      </>
+    ),
+    [selectedCategory]
+  );
+
+  const renderItem: ListRenderItem<Service> = useCallback(
+    ({ item: service }) => <ServiceListItem service={service} />,
+    []
+  );
 
   return (
     <>
@@ -22,38 +83,23 @@ export default function HomeScreen() {
         />
         <Logo size="small" />
       </View>
-        <ScrollView contentContainerStyle={styles.container}>
-          {/* SearchBar removed from Home (now in Explore) */}
-          <View style={styles.featuredSection}>
-            <Text style={styles.sectionTitle}>
-              Featured Merchant
-            </Text>
-            <CardService
-              id={services[0].id}
-              title={services[0].name}
-              imageSrc={services[0].imageSrc}
-              rating={services[0].rating}
-              tags={services[0].tags}
-              variant="featured"
-              style={{ width: '100%' }}
-            />
-          </View>
-            <CardCategories />
-            <View style={styles.servicesList}>
-              {services.map((service) => (
-                <View key={service.id} style={styles.serviceWrapper}>
-                  <CardService
-                      id={service.id}
-                      title={service.name}
-                    imageSrc={service.imageSrc}
-                    rating={service.rating}
-                    tags={service.tags}
-                    style={{ width: '100%' }}
-                  />
-                </View>
-              ))}
-            </View>
-      </ScrollView>
+      <FlatList
+        data={visibleServices}
+        keyExtractor={(service) => service.id}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListHeaderComponent={listHeader}
+        ListHeaderComponentStyle={styles.listHeader}
+        ListFooterComponent={hasMore ? <Text style={styles.loadingText}>Loading more services…</Text> : null}
+        ListEmptyComponent={<Text style={styles.emptyText}>No services found.</Text>}
+        contentContainerStyle={styles.container}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+        initialNumToRender={INITIAL_SERVICES_COUNT}
+        maxToRenderPerBatch={4}
+        windowSize={5}
+        removeClippedSubviews
+      />
     </>
   );
 }
@@ -86,10 +132,27 @@ const styles = StyleSheet.create({
   },
   serviceWrapper: {
     position: 'relative',
+    marginBottom: 16,
+  },
+  listHeader: {
+    paddingBottom: 24,
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 15,
+  },
+  loadingText: {
+    width: '100%',
+    textAlign: 'center',
+    color: '#666',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  emptyText: {
+    width: '100%',
+    textAlign: 'center',
+    color: '#666',
+    marginTop: 20,
   },
 });

@@ -2,7 +2,7 @@ import { useUserStore } from '@/lib/store';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 
@@ -17,7 +17,7 @@ interface CardServiceProps {
   distanceMeters?: number;
 }
 
-export default function CardService({
+function CardService({
   title,
   id,
   imageSrc,
@@ -34,14 +34,14 @@ export default function CardService({
   const isFavorited = !!(id && user?.favoriteServiceIds?.includes(id));
   const router = useRouter();
 
-  const handleFavoritePress = () => {
+  const handleFavoritePress = useCallback(() => {
     if (!id) return;
     if (!user) {
       router.push('/(tabs)/profile');
       return;
     }
     toggle(id);
-  };
+  }, [id, router, toggle, user]);
 
   return (
     <View style={[styles.card, isFeatured && styles.featuredCard, style]}>
@@ -92,6 +92,8 @@ function formatDistance(meters: number) {
   if (meters < 1000) return `${meters} m`;
   return `${(meters / 1000).toFixed(1)} km`;
 }
+
+export default React.memo(CardService);
 
 const styles = StyleSheet.create({
   card: {
