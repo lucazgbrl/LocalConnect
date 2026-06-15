@@ -3,10 +3,9 @@ import { services } from '@/assets/mocks/services_and_stores_mock';
 import CardService from '@/components/CardService';
 import Logo from '@/components/Logo';
 import { useUserStore } from '@/lib/store';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function FavoritesScreen() {
   const user = useUserStore((state) => state.user);
@@ -67,7 +66,7 @@ export default function FavoritesScreen() {
                 style={styles.removeButton}
                 onPress={() => handleRemoveFavorite(service.id)}
               >
-                <Icon name="close" size={18} color="#fff" />
+                <Ionicons name="close" size={18} color="#fff" />
               </TouchableOpacity>
             </View>
           ))}

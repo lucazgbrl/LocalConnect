@@ -1,6 +1,6 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 type Category = {
   id: string;
@@ -42,7 +42,7 @@ export default function CardCategories() {
             style={[styles.categoryCard, { minWidth: cardMinWidth }]}
           >
             <View style={[styles.iconContainer, { backgroundColor: category.backgroundColor }]}>
-              <Icon name={category.icon} size={20} color={category.color} />
+              <Ionicons name={category.icon as any} size={20} color={category.color} />
             </View>
             <Text style={styles.categoryText}>{category.name}</Text>
           </TouchableOpacity>

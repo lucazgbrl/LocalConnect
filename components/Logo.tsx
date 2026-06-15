@@ -1,6 +1,6 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface LogoProps {
   size?: 'small' | 'medium' | 'large';
@@ -34,7 +34,7 @@ export default function Logo({ size = 'medium', showText = false }: LogoProps) {
         {/* Background with gradient-like effect */}
         <View style={styles.innerCircle}>
           {/* Map pin representing location */}
-          <Icon name="location-on" size={currentSize * 0.55} color="#fff" />
+          <MaterialIcons name="location-on" size={currentSize * 0.55} color="#fff" />
         </View>
         
         {/* Decorative connection dots */}

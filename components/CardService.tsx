@@ -1,7 +1,7 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import React from 'react';
 import { ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 
 interface CardServiceProps {
@@ -32,7 +32,7 @@ export default function CardService({
       />
 
       <View style={styles.ratingContainer}>
-        <Icon name="thumbs-up" size={14} color="#000" />
+        <Ionicons name="thumbs-up" size={14} color="#000" />
         <Text style={styles.ratingText}>{rating}</Text>
       </View>
 

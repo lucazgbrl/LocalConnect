@@ -2,7 +2,7 @@ import { users } from '@/assets/mocks/users_mock';
 import Logo from '@/components/Logo';
 import { useUserStore } from '@/lib/store';
 import { UserTypeId } from '@/types/user';
-import { FontAwesome, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
