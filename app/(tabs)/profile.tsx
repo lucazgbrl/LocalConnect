@@ -2,10 +2,10 @@ import { users } from '@/assets/mocks/users_mock';
 import Logo from '@/components/Logo';
 import { useUserStore } from '@/lib/store';
 import { UserTypeId } from '@/types/user';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const CONSUMER_LINKS = [
   { icon: 'calendar', label: 'My Bookings' },
@@ -235,10 +235,10 @@ function ProfileLink({ icon, label }: { icon: string; label: string }) {
   return (
     <TouchableOpacity style={styles.link}>
       <View style={styles.linkLeft}>
-        <Icon name={icon} size={22} color="#333" />
+        <Ionicons name={icon as any} size={22} color="#333" />
         <Text style={styles.linkLabel}>{label}</Text>
       </View>
-      <Icon name="chevron-forward" size={20} color="#999" />
+      <Ionicons name="chevron-forward" size={20} color="#999" />
     </TouchableOpacity>
   );
 }
