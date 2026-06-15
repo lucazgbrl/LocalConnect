@@ -6,23 +6,24 @@ type Category = {
   id: string;
   name: string;
   icon: string;
+  color: string;
+  backgroundColor: string;
 };
 
 const ALL_CATEGORIES: Category[] = [
-  { id: '1', name: 'Restaurants', icon: 'restaurant' },
-  { id: '2', name: 'Beauty', icon: 'flower' },
-  { id: '3', name: 'Home', icon: 'construct' },
-  { id: '4', name: 'Fitness', icon: 'barbell' },
-  { id: '5', name: 'Shopping', icon: 'cart' },
-  { id: '6', name: 'Travel', icon: 'airplane' },
-  { id: '7', name: 'Pets', icon: 'paw' },
-  { id: '8', name: 'Education', icon: 'school' },
-  // Adicione mais categorias aqui
+  { id: '1', name: 'Restaurants', icon: 'restaurant', color: '#C2410C', backgroundColor: '#FFF1E8' },
+  { id: '2', name: 'Beauty', icon: 'sparkles', color: '#BE185D', backgroundColor: '#FCE7F3' },
+  { id: '3', name: 'Home', icon: 'construct', color: '#047857', backgroundColor: '#DFF7EA' },
+  { id: '4', name: 'Fitness', icon: 'barbell', color: '#1D4ED8', backgroundColor: '#E8F0FF' },
+  { id: '5', name: 'Shopping', icon: 'cart', color: '#7C3AED', backgroundColor: '#F1EAFF' },
+  { id: '6', name: 'Travel', icon: 'airplane', color: '#0369A1', backgroundColor: '#E0F2FE' },
+  { id: '7', name: 'Pets', icon: 'paw', color: '#B45309', backgroundColor: '#FEF3C7' },
+  { id: '8', name: 'Education', icon: 'school', color: '#4338CA', backgroundColor: '#EDEBFF' },
 ];
 
 export default function CardCategories() {
   const { width } = useWindowDimensions();
-  const cardSize = Math.min(Math.max(width * 0.2, 80), 104);
+  const cardMinWidth = Math.min(Math.max(width * 0.32, 112), 148);
 
   return (
     <View style={styles.wrapper}>
@@ -38,9 +39,11 @@ export default function CardCategories() {
         {ALL_CATEGORIES.map((category) => (
           <TouchableOpacity
             key={category.id}
-            style={[styles.categoryCard, { width: cardSize, height: cardSize }]}
+            style={[styles.categoryCard, { minWidth: cardMinWidth }]}
           >
-            <Icon name={category.icon} size={24} color="#fff" />
+            <View style={[styles.iconContainer, { backgroundColor: category.backgroundColor }]}>
+              <Icon name={category.icon} size={20} color={category.color} />
+            </View>
             <Text style={styles.categoryText}>{category.name}</Text>
           </TouchableOpacity>
         ))}
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
     maxWidth: 720,
-    backgroundColor: '#f8f8f8'
+    backgroundColor: '#f8f8f8',
   },
   header: {
     flexDirection: 'row',
@@ -67,21 +70,33 @@ const styles = StyleSheet.create({
   },
   listContent: {
     flexDirection: 'row',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    gap: 12,
+    paddingBottom: 4,
   },
   categoryCard: {
-    backgroundColor: '#000',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
     borderRadius: 12,
-    marginRight: 12,
-    marginBottom: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  iconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
   },
   categoryText: {
-    color: '#fff',
-    marginTop: 8,
-    fontSize: 12,
-    textAlign: 'center',
-    paddingHorizontal: 4,
+    flex: 1,
+    color: '#222',
+    marginLeft: 10,
+    fontSize: 13,
+    fontWeight: '700',
   },
 });

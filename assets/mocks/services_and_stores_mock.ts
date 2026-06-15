@@ -1,40 +1,84 @@
 import Service from "../../types/service";
 
-//mock services using sample pngs from assets/images
 export const services: Service[] = [
   {
     id: "1",
     name: "Barber Shop",
     description: "Get the best haircut in town!",
-    imageSrc: require("@/assets/images/sample_barber.png"),
+    imageSrc: require("@/assets/images/service_barber.jpg"),
     rating: 4.5,
     tags: ["Haircut", "Barber", "Grooming"],
   },
-  //sample gym
   {
     id: "2",
     name: "Local Gym",
     description: "Join our fitness community!",
-    imageSrc: require("@/assets/images/sample_gym.png"),
+    imageSrc: require("@/assets/images/service_gym.jpg"),
     rating: 4.7,
     tags: ["Gym", "Fitness", "Health"],
   },
-  //sample ballet class
   {
     id: "3",
     name: "Ballet Class",
     description: "Learn ballet from professional instructors.",
-    imageSrc: require("@/assets/images/sample_ballet_class.png"),
+    imageSrc: require("@/assets/images/service_ballet.jpg"),
     rating: 4.8,
     tags: ["Dance", "Ballet", "Class"],
   },
-  //sample yoga
   {
     id: "4",
     name: "Yoga Studio",
     description: "Relax and rejuvenate with our yoga classes.",
-    imageSrc: require("@/assets/images/sample_yoga.png"),
+    imageSrc: require("@/assets/images/service_yoga.jpg"),
     rating: 4.6,
     tags: ["Yoga", "Wellness", "Meditation"],
+  },
+  {
+    id: "5",
+    name: "Nina's Bistro",
+    description: "Fresh lunch plates and cozy dinner reservations.",
+    imageSrc: require("@/assets/images/service_restaurant.jpg"),
+    rating: 4.9,
+    tags: ["Restaurant", "Lunch", "Dinner"],
+  },
+  {
+    id: "6",
+    name: "Calm Spa",
+    description: "Massage, skin care, and relaxation packages.",
+    imageSrc: require("@/assets/images/service_spa.jpg"),
+    rating: 4.8,
+    tags: ["Beauty", "Massage", "Spa"],
+  },
+  {
+    id: "7",
+    name: "Bright Home Cleaning",
+    description: "Scheduled cleaning for homes and apartments.",
+    imageSrc: require("@/assets/images/service_cleaning.jpg"),
+    rating: 4.7,
+    tags: ["Cleaning", "Home", "Routine"],
+  },
+  {
+    id: "8",
+    name: "Happy Paws Care",
+    description: "Pet sitting, walks, and grooming appointments.",
+    imageSrc: require("@/assets/images/service_pet.jpg"),
+    rating: 4.9,
+    tags: ["Pets", "Grooming", "Walks"],
+  },
+  {
+    id: "9",
+    name: "Focus Tutoring",
+    description: "Private lessons for school and test preparation.",
+    imageSrc: require("@/assets/images/service_tutoring.jpg"),
+    rating: 4.6,
+    tags: ["Education", "Lessons", "Tests"],
+  },
+  {
+    id: "10",
+    name: "Corner Coffee",
+    description: "Coffee, pastries, and quiet tables for work.",
+    imageSrc: require("@/assets/images/service_cafe.jpg"),
+    rating: 4.7,
+    tags: ["Cafe", "Coffee", "Bakery"],
   },
 ];
